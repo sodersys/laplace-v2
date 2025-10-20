@@ -9,7 +9,7 @@ def validateRequest(key: str):
 
 @app.route("/")
 def home():
-    return "accessing the things!", 200
+    return os.getenv("DiscordAPIKey")
 
 @app.route("/ValidateUserRanks", methods=["POST"])
 def validateUserRanks():
