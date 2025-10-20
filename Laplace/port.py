@@ -9,7 +9,7 @@ def validateRequest(key: str):
 
 @app.route("/")
 def home():
-    return 200
+    return "accessing the things!", 200
 
 @app.route("/ValidateUserRanks", methods=["POST"])
 def validateUserRanks():
