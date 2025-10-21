@@ -12,14 +12,9 @@ def validateRequest(key: str):
 def home():
     return "omg"
 
-@app.route("/check")
-def home():
-    return os.getenv("AuthenticationKey")
-
 @app.route("/validateuserranks/<user_id>",)
 def validateUserRanks(user_id):
     return db.get(user_id)
-
 
 def init():
     app.run(host="0.0.0.0", port=port)
