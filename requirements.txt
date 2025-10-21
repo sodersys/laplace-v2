@@ -1,4 +1,4 @@
 hikari
 requests
 flask
-flask-limiter
+firebase-admin

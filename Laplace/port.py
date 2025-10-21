@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request
+import Laplace.Utility.db as db
 
 app = Flask(__name__)
 port = int(os.getenv("PORT", 8080))
@@ -9,11 +10,15 @@ def validateRequest(key: str):
 
 @app.route("/")
 def home():
-    return os.getenv("DiscordAPIKey")
+    return "omg"
 
-@app.route("/ValidateUserRanks", methods=["POST"])
-def validateUserRanks():
-    headers = request.headers
+@app.route("/check")
+def home():
+    return os.getenv("AuthenticationKey")
+
+@app.route("/validateuserranks/<user_id>",)
+def validateUserRanks(user_id):
+    return db.get(user_id)
 
 
 def init():
