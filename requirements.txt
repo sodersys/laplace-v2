@@ -2,3 +2,6 @@ hikari
 requests
 flask
 firebase-admin
+json-with-comments
+roblox
+hikari-lightbulb
