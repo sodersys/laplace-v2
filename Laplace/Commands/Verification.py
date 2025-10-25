@@ -170,6 +170,10 @@ class Verify(
                     robloxUserName = roblox.getUserName(boundRobloxAccount)
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"Your account is already bound to [{robloxUserName}](https://www.roblox.com/users/{boundRobloxAccount}/profile). If you want to get this account removed, create a ticket in the AD server."))
                return
+         
+          accountName = roblox.getUserName(self.robloxId)
+          if accountName is None:
+               await ctx.respond(await ctx.respond(embeds.makeEmbed("Failure", "Account does not exist.", f"There is no account linked to the id: {self.robloxId}")))
           await ctx.respond(embeds.makeEmbed("Success", "Ready to Verify.", "You don't have a linked account, click the link sent to you in DMs to authenticate your account."))
           stateToken = secrets.token_urlsafe(16)
           db.pending[stateToken] = {
@@ -191,7 +195,7 @@ class Verify(
           components = [
                hikari.impl.ContainerComponentBuilder(
                     components=[
-                         hikari.impl.TextDisplayComponentBuilder(content=f"You have a pending verification request between https://www.roblox.com/users/{self.robloxId}/profile and your discord account. Click the button below and authorize Laplace Authentication to complete verification."),
+                         hikari.impl.TextDisplayComponentBuilder(content=f"You have a pending verification request between [{robloxUserName}](https://www.roblox.com/users/{self.robloxId}/profile) and your discord account. Click the button below and authorize Laplace Authentication to complete verification."),
                     ]
                ),
                hikari.impl.MessageActionRowBuilder(
