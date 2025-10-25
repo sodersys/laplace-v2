@@ -159,7 +159,7 @@ class Verify(
                     robloxUserName = roblox.getUserName(boundRobloxAccount)
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"Your account is already bound to [{robloxUserName}](https://www.roblox.com/users/{boundRobloxAccount}/profile). If you want to get this account removed, create a ticket in the AD server."))
                return
-          await ctx.respond(embeds.makeEmbed("Success", "You don't have a linked account, click the link sent to you in DMs to authenticate your account."))
+          await ctx.respond(embeds.makeEmbed("Success", "Ready to Verify.", "You don't have a linked account, click the link sent to you in DMs to authenticate your account."))
           stateToken = secrets.token_urlsafe(16)
           db.pending[stateToken] = ctx.user.id
 
