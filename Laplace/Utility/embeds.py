@@ -15,8 +15,8 @@ class field():
      value: str
      inline: bool
 
-def makeEmbed(type: embedTypeKeys, title: str, description: str, to: hikari.User | None, fields: list[field] | None) -> hikari.Embed:
-     embed = embeds.Embed(title, description, color=embedTypes[type], timestamp=datetime.datetime.now())
+def makeEmbed(type: embedTypeKeys, title: str, description: str, to: hikari.User | None = None, fields: list[field] | None = None) -> hikari.Embed:
+     embed = embeds.Embed(title=title, description=description, color=embedTypes[type], timestamp=datetime.datetime.now(tz=datetime.timezone.utc))
      if not to is None:
           embed.set_author(name=to.global_name, icon=to.make_avatar_url())
 

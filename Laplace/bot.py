@@ -11,8 +11,7 @@ def init():
  
      @bot.listen(hikari.StartingEvent)
      async def on_starting(_: hikari.StartingEvent) -> None:
-          await client.load_extensions("Laplace.Commands.Verification")
-
+          await client.load_extensions("Laplace.Commands.Verification", "Laplace.Commands.UpdateDB")
           await client.start()
 
      bot.run()

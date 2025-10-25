@@ -8,7 +8,7 @@ currentConfig: any = None
 
 def updateConfig():
      global currentConfig
-     currentConfig = db.reference(path="/", app=app)
+     currentConfig = db.reference(path="/", app=app).get()
 
 def getConfig():
      return currentConfig
