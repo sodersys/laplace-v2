@@ -24,7 +24,7 @@ def makeEmbed(type: embedTypeKeys, title: str, description: str, to: hikari.User
           return embed
 
      for field in fields:
-          embed.add_field(field.name, field.value, inline=field.inline)
+          embed.add_field(field['name'], field['value'], inline=field['inline'])
      
      return embed
 

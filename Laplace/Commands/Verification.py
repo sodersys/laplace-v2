@@ -23,29 +23,40 @@ async def update(ctx: lightbulb.Context, otherUser: int | None = None) -> hikari
      if not guildId in configData['discords']:
           return failedUpdate("Server is not set up to grant roles.")
 
-     guildData: dict[int, dict[int, list[str]]] = configData['discords'][guildId]['binds']
+     guildData: dict[str, dict[int, dict[int, list[str]]] | str] = configData['discords'][guildId]['binds']
      robloxGroups = roblox.getGroupRoles(robloxId)
 
+
      rolesToAdd = []
+     nameFormat = "{username}"
+     currentPriority = 0
      for groupId, boundRoles in guildData.items():
           groupName = configData['map'][str(groupId)]
           if not groupName in robloxGroups:
                continue
-
-          groupRank = robloxGroups[groupName]['groupRank']
-
+          groupRank = str(robloxGroups[groupName]['groupRank'])
           if not groupRank in boundRoles:
                continue
-          
-          rolesToAdd.extend(boundRoles[groupRank])
 
+          if 'nameFormat' in boundRoles[groupRank]:
+               if boundRoles[groupRank]['formatPriority'] > currentPriority:
+                    nameFormat = boundRoles[groupRank]['nameFormat']
+
+          for role in boundRoles[groupRank]['roles']:
+               role = int(role)
+               rolesToAdd.append(role)
+
+     rolesToRemove = []
      member = await ctx.client.app.rest.fetch_member(ctx.guild_id, ctx.user.id)
      roleIds = member.role_ids
 
-     rolesToRemove = []
-
      for role in configData['discords'][guildId]['ranks']:
-          if role in roleIds and not role in rolesToAdd:
+          role = int(role)
+          if role in roleIds:
+               if role in rolesToAdd:
+                    rolesToAdd.remove(role)
+                    continue
+
                rolesToRemove.append(role)
 
      rolesToAdd = set(rolesToAdd)
@@ -56,11 +67,11 @@ async def update(ctx: lightbulb.Context, otherUser: int | None = None) -> hikari
 
      for role in rolesToAdd:
           addString += f"<@&{role}>\n"
-          member.add_role(role)
+          await member.add_role(role)
           
      for role in rolesToRemove:
           removeString += f"<@&{role}>\n"
-          member.remove_role(role)
+          await member.remove_role(role)
 
      fields: list[embeds.field] = []
 
@@ -68,18 +79,35 @@ async def update(ctx: lightbulb.Context, otherUser: int | None = None) -> hikari
           fields.append({
                "name": "Roles Added",
                "value": addString,
-               "inline": False
+               "inline": True
           })
 
      if removeString != "":
           fields.append({
                "name": "Roles Removed",
                "value": removeString,
-               "inline": False
+               "inline": True
           })
 
-     if addString == "" and removeString == "":
-          return embeds.makeEmbed("Success", "Update Successful.", "No roles were added or removed.")
+     formattedName = nameFormat.format(username = roblox.getUserName(robloxId) or "brokenUserName")
+     oldName = member.nickname or member.username
+     if formattedName != member.nickname:
+          try:
+               await member.edit(nickname=formattedName)
+               fields.append({
+                    'name': "Nickname Set",
+                    'value': f"{oldName} -> {formattedName}",
+                    "inline": False,
+               })
+          except:
+               fields.append({
+                    'name': "Failed to set nickname.",
+                    'value': f"Desired Nickname: {formattedName}",
+                    "inline": False,
+               })
+
+     if removeString == "" and addString == "":
+          return embeds.makeEmbed("Success", "Update Successful.", "No roles were added or removed.", fields = fields)
      
      if otherUser:
           return embeds.makeEmbed("Success", "Update Successful", f"<@{otherUser}>'s roles were changed.", fields = fields)
@@ -110,13 +138,13 @@ class Verify(
                return await ctx.respond("You can only use commands inside of Fourier Discord servers.")
 
           if self.robloxId == 0:
-               await ctx.respond(await update(ctx.user, ctx.guild_id))
+               await ctx.respond(await update(ctx.user))
                return
 
           boundAccount = db.getDiscordId(self.robloxId)
           if boundAccount != "0":
                if boundAccount == ctx.user.id:
-                    await ctx.respond(await update(ctx.user, ctx.guild_id))
+                    await ctx.respond(await update(ctx.user))
                else:
                     robloxUserName = roblox.getUserName(self.robloxId)
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"[{robloxUserName}](https://www.roblox.com/users/{self.robloxId}/profile) is already bound to user: <@{boundAccount}>"))
@@ -125,7 +153,7 @@ class Verify(
           boundRobloxAccount = db.getRobloxId(ctx.user.id)
           if boundRobloxAccount != "0":
                if boundRobloxAccount == self.robloxId:
-                    await ctx.respond(update(ctx.user, ctx.guild_id))
+                    await ctx.respond(update(ctx.user))
                else: 
                     robloxUserName = roblox.getUserName(boundRobloxAccount)
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"Your account is already bound to [{robloxUserName}](https://www.roblox.com/users/{boundRobloxAccount}/profile). If you want to get this account removed, create a ticket in the AD server."))
@@ -147,5 +175,3 @@ class Update(
                await ctx.respond(await update(ctx, self.otherUser))
           else:
                await ctx.respond(embeds.makeEmbed("Failure", "Failed to update.", "You do not have permissions to update other users."))
-
-
