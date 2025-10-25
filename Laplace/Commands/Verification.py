@@ -29,6 +29,16 @@ async def update(ctx: lightbulb.Context, otherUser: int | None = None) -> hikari
      nameFormat = "{username}"
      currentPriority = 0
      for groupId, boundRoles in guildData.items():
+          if "in" in boundRoles:
+               for role in boundRoles["in"]['roles']:
+                    role = int(role)
+                    rolesToAdd.append(role)
+               if 'nameFormat' in boundRoles["in"]:
+                    if boundRoles["in"]['formatPriority'] > currentPriority:
+                         nameFormat = boundRoles["in"]['nameFormat']
+                         currentPriority = boundRoles["in"]['formatPriority']
+               
+
           groupName = configData['map'][str(groupId)]
           if not groupName in robloxGroups:
                continue
@@ -39,7 +49,7 @@ async def update(ctx: lightbulb.Context, otherUser: int | None = None) -> hikari
           if 'nameFormat' in boundRoles[groupRank]:
                if boundRoles[groupRank]['formatPriority'] > currentPriority:
                     nameFormat = boundRoles[groupRank]['nameFormat']
-
+                    currentPriority = boundRoles[groupRank]['formatPriority']
           for role in boundRoles[groupRank]['roles']:
                role = int(role)
                rolesToAdd.append(role)
@@ -177,7 +187,23 @@ class Verify(
 
           userChannel = await ctx.user.fetch_dm_channel()
 
-          await ctx.client.app.rest.create_message(userChannel.id, f"Click [here]({authUrl}) to authorize Laplace in order to validate your account.")
+          components = [
+               hikari.impl.ContainerComponentBuilder(
+                    components=[
+                         hikari.impl.TextDisplayComponentBuilder(content=f"You have a pending verification request between https://www.roblox.com/users/{self.robloxId}/profile and your discord account. Click the button below and authorize Laplace Authentication to complete verification."),
+                    ]
+               ),
+               hikari.impl.MessageActionRowBuilder(
+                    components=[
+                         hikari.impl.LinkButtonBuilder(
+                              url=authUrl,
+                              label="Verify Your Account",
+                         ),
+                    ]
+               ),
+          ]
+
+          await ctx.client.app.rest.create_message(userChannel.id, components)
           
 @loader.command
 class Update(
