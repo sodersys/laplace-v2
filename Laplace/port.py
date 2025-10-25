@@ -46,7 +46,7 @@ def redirect():
         headers={"Authorization": f"Bearer {accessToken}"}
     ).json()        
 
-    robloxUserId = newResponse.get("sub")
+    robloxUserId = int(newResponse.get("sub"))
     discordUserId = db.pending[state]['discord']
     desiredRobloxUserId = db.pending[state]['roblox']
 
