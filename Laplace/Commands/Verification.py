@@ -152,7 +152,7 @@ class Verify(
                return
           
           boundRobloxAccount = db.getRobloxId(ctx.user.id)
-          if boundRobloxAccount != "0":
+          if boundRobloxAccount != 0:
                if boundRobloxAccount == self.robloxId:
                     await ctx.respond(update(ctx))
                else: 
