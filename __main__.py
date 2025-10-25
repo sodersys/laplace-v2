@@ -1,8 +1,9 @@
 from Laplace import port, bot
 from Laplace.Utility import db, config, embeds, quota, roblox
+from threading import Thread
+import asyncio
 
-config.init()
+Thread(target = port.init).start()
+config.updateConfig()
 roblox.init()
-db.init()
-port.init()
 bot.init()

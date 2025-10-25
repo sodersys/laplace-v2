@@ -1,9 +1,9 @@
 from roblox import Client
 import os, time, json, requests
-from Laplace.Utility.db import DepartmentInfo
-from Laplace.Utility.config import getConfigData
+from Laplace.Utility.db import UserProfile, DepartmentInfo, getQuotaStatus, getRobloxId, getDiscordId
+from Laplace.Utility.config import getConfig
 
-configData = getConfigData()
+configData = getConfig()
 client: Client = None
 
 def getUserName(userId: int) -> str | None:
@@ -12,8 +12,20 @@ def getUserName(userId: int) -> str | None:
           return None
      return result.json()['name']
 
+def getUserProfile(discordId: str) -> UserProfile:
+     robloxId = getRobloxId(discordId)
+
+     userProfile: UserProfile = {
+         'discordId': discordId,
+         'robloxId': robloxId,
+         'robloxName': getUserName(robloxId),
+         'departments': getGroupRoles(robloxId)
+     }
+
+     if robloxId == 0:
+          return userProfile
+
 def getGroupRoles(userId: int) -> dict[str, DepartmentInfo]: 
-     from Laplace.Utility.db import getQuotaStatus
 
      result = requests.get(f'https://groups.roblox.com/v1/users/{userId}/groups/roles?includeLocked=false')
      if not result.ok:

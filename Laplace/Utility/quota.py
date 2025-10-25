@@ -2,7 +2,7 @@ import requests, time
 import Laplace.Utility.config as Config
 import Laplace.Utility.db as db
 import Laplace.Utility.embeds as embeds
-from bot import bot
+import Laplace.bot as bot
 
 def quotaCheck(playerData: db.QuotaData, quotaData: db.QuotaData):
      if "firstQuota" in playerData or "ignoreQuota" in playerData:
@@ -83,11 +83,11 @@ async def announceQuotaCheck(division: str, results: dict[int, bool], best: list
           t += 1
           if t > 150 :
                t = 0
-               await bot.rest.create_message(channelId, embeds.makeEmbed("Success", "Passed Quota", field))
+               await bot.bot.rest.create_message(channelId, embeds.makeEmbed("Success", "Passed Quota", field))
                field = ""
 
      if t != 0:
-          await bot.rest.create_message(channelId, embeds.makeEmbed("Success", "Passed Quota", field))
+          await bot.bot.rest.create_message(channelId, embeds.makeEmbed("Success", "Passed Quota", field))
      
      t = 0
      field = ""
@@ -96,13 +96,13 @@ async def announceQuotaCheck(division: str, results: dict[int, bool], best: list
           t += 1
           if t > 150 :
                t = 0
-               await bot.rest.create_message(channelId, embeds.makeEmbed("Failure", "Failed Quota", field))
+               await bot.bot.rest.create_message(channelId, embeds.makeEmbed("Failure", "Failed Quota", field))
                field = ""
 
      if t != 0:
-          await bot.rest.create_message(channelId, embeds.makeEmbed("Failure", "Failed Quota", field))
+          await bot.bot.rest.create_message(channelId, embeds.makeEmbed("Failure", "Failed Quota", field))
              
-     await bot.rest.create_message(channelId, )
+     await bot.bot.rest.create_message(channelId, )
 
 async def checkAllQuotas():
      for division, divisionId in Config.currentConfig['map'].items():

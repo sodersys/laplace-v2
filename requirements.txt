@@ -5,3 +5,5 @@ firebase-admin
 json-with-comments
 roblox
 hikari-lightbulb
+python-dotenv
+asyncio

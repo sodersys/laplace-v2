@@ -1,10 +1,12 @@
 import hikari, lightbulb
 from Laplace.Utility import db, config, embeds, roblox
 
+loader = lightbulb.Loader()
+
 def update(user: hikari.User, guildId: int) -> hikari.Embed:
      return 10
 
-
+@loader.command
 class Verify(
      lightbulb.SlashCommand,
      name = "verify",
@@ -30,11 +32,3 @@ class Verify(
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"You {10}"))
                return
                     
-
-
-
-
-
-
-def registerCommands(client: lightbulb.Client):
-     client.register(Verify)
