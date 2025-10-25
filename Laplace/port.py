@@ -38,7 +38,8 @@ def redirect():
     ).json()
 
     if not "access_token" in response:
-        accessToken = response["access_token"]
+        return "oops there was an error :3"
+    accessToken = response["access_token"]
 
     newResponse = requests.get(
         "https://apis.roblox.com/oauth/v1/userinfo",

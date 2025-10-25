@@ -164,7 +164,7 @@ class Verify(
           db.pending[stateToken] = ctx.user.id
 
           authUrl = (
-               f"https://www.roblox.com/oauth/authorize"
+               f"https://api.roblox.com/oauth/v1/authorize"
                f"?client_id={clientId}"
                f"&response_type=code"
                f"&scope={scope}"
