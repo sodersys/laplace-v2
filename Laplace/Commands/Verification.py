@@ -1,4 +1,5 @@
 import hikari, lightbulb, secrets, os
+from hikari import messages
 from Laplace.Utility import db, config, embeds, roblox
 loader = lightbulb.Loader()
 
@@ -203,7 +204,7 @@ class Verify(
                ),
           ]
 
-          await ctx.client.app.rest.create_message(userChannel.id, components)
+          await ctx.client.app.rest.create_message(userChannel.id, flags=messages.MessageFlag.IS_COMPONENTS_V2, components=components)
           
 @loader.command
 class Update(
