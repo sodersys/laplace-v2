@@ -7,3 +7,4 @@ roblox
 hikari-lightbulb
 python-dotenv
 asyncio
+flask[async]
