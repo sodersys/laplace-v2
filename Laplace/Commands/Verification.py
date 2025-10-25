@@ -139,13 +139,13 @@ class Verify(
                return await ctx.respond("You can only use commands inside of Fourier Discord servers.")
 
           if self.robloxId == 0:
-               await ctx.respond(await update(ctx.user))
+               await ctx.respond(await update(ctx))
                return
 
           boundAccount = db.getDiscordId(self.robloxId)
           if boundAccount != "0":
                if boundAccount == ctx.user.id:
-                    await ctx.respond(await update(ctx.user))
+                    await ctx.respond(await update(ctx))
                else:
                     robloxUserName = roblox.getUserName(self.robloxId)
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"[{robloxUserName}](https://www.roblox.com/users/{self.robloxId}/profile) is already bound to user: <@{boundAccount}>"))
@@ -154,7 +154,7 @@ class Verify(
           boundRobloxAccount = db.getRobloxId(ctx.user.id)
           if boundRobloxAccount != "0":
                if boundRobloxAccount == self.robloxId:
-                    await ctx.respond(update(ctx.user))
+                    await ctx.respond(update(ctx))
                else: 
                     robloxUserName = roblox.getUserName(boundRobloxAccount)
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"Your account is already bound to [{robloxUserName}](https://www.roblox.com/users/{boundRobloxAccount}/profile). If you want to get this account removed, create a ticket in the AD server."))

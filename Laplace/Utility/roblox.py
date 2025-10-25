@@ -58,6 +58,8 @@ def getGroupRolesWithQuota(userId: int) -> dict[str, DepartmentInfo]:
      
      jsonResult = result.json()['data']
      groupRoles: dict[str, DepartmentInfo] = {}
+     
+     configData = config.getConfig()
 
      for group in jsonResult:
           groupId = group['group']['id']
