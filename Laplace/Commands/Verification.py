@@ -161,10 +161,13 @@ class Verify(
                return
           await ctx.respond(embeds.makeEmbed("Success", "Ready to Verify.", "You don't have a linked account, click the link sent to you in DMs to authenticate your account."))
           stateToken = secrets.token_urlsafe(16)
-          db.pending[stateToken] = ctx.user.id
+          db.pending[stateToken] = {
+               "discord": ctx.user.id,
+               "roblox": self.robloxId
+          }
 
           authUrl = (
-               f"https://api.roblox.com/oauth/v1/authorize"
+               f"https://apis.roblox.com/oauth/v1/authorize"
                f"?client_id={clientId}"
                f"&response_type=code"
                f"&scope={scope}"
@@ -174,8 +177,7 @@ class Verify(
 
           userChannel = await ctx.user.fetch_dm_channel()
 
-          await ctx.client.app.rest.create_message(userChannel.id, f"Authorize Laplace in order to validate your account. {authUrl}")
-
+          await ctx.client.app.rest.create_message(userChannel.id, f"Click [here]({authUrl}) to authorize Laplace in order to validate your account.")
           
 @loader.command
 class Update(

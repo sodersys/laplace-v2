@@ -38,7 +38,7 @@ def redirect():
     ).json()
 
     if not "access_token" in response:
-        return "oops there was an error :3"
+        return "oops there was an error :3", 400
     accessToken = response["access_token"]
 
     newResponse = requests.get(
@@ -46,11 +46,17 @@ def redirect():
         headers={"Authorization": f"Bearer {accessToken}"}
     ).json()        
 
-    roblox_user_id = newResponse.get("sub")
+    robloxUserId = newResponse.get("sub")
+    discordUserId = db.pending[state]['discord']
+    desiredRobloxUserId = db.pending[state]['roblox']
 
     del db.pending[state]
     
-    db.link(roblox_user_id)
+    if robloxUserId != desiredRobloxUserId:
+        return "Error linking account, you provided and logged into two different roblox accounts.", 400
+
+    db.link(robloxUserId, discordUserId)
+    return "Your account has been successfully linked."
 
 @app.route("/tos")
 def tos():
