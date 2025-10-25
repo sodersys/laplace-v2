@@ -29,7 +29,7 @@ def home():
     return "omg"
 
 @app.route("/redirect")
-async def redirect():
+def redirect():
     code = request.args.get('code')
     state = request.args.get('state')
 
@@ -66,11 +66,11 @@ async def redirect():
     del db.pending[state]
 
     if robloxUserId != desiredRobloxUserId:
-        await sendFailure(discordUserId, robloxUserId)
+        asyncio.run(sendFailure(discordUserId, robloxUserId))
         return "Error linking account, you provided and logged into two different roblox accounts.", 400
 
 
-    await sendConfirmation(discordUserId, robloxUserId)
+    asyncio.run(sendConfirmation(discordUserId, robloxUserId))
     db.link(robloxUserId, discordUserId)
     return "Your account has been successfully linked."
 
