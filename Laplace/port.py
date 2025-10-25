@@ -66,10 +66,10 @@ def redirect():
     del db.pending[state]
     
     if robloxUserId != desiredRobloxUserId:
-        asyncio.create_task(sendConfirmation())        
+        asyncio.create_task(sendFailure(discordUserId, robloxUserId))        
         return "Error linking account, you provided and logged into two different roblox accounts.", 400
 
-    asyncio.create_task(sendConfirmation())
+    asyncio.create_task(sendConfirmation(discordUserId, robloxUserId))
     db.link(robloxUserId, discordUserId)
     return "Your account has been successfully linked."
 
