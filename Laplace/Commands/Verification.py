@@ -174,7 +174,7 @@ class Verify(
 
           userChannel = await ctx.user.fetch_dm_channel()
 
-          userChannel.send(f"Authorize Laplace in order to validate your account. {authUrl}")
+          ctx.client.app.rest.create_message(userChannel.id, f"Authorize Laplace in order to validate your account. {authUrl}")
 
           
 @loader.command
