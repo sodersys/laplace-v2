@@ -1,20 +1,7 @@
 import os
 from flask import Flask, request
 import requests
-from Laplace.Utility import db
-from Laplace import bot
-import asyncio
-
-async def sendConfirmation(discordId: int, robloxId: int):
-    user = await bot.bot.rest.fetch_user(discordId)
-    userChannel = await user.fetch_dm_channel()
-    await bot.bot.rest.create_message(userChannel.id, f"✅ Your roblox account has been linked to https://www.roblox.com/users/{robloxId}/profile")
-         
-async def sendFailure(discordId: int, robloxId: int):
-    user = await bot.bot.rest.fetch_user(discordId)
-    userChannel = await user.fetch_dm_channel()
-    await bot.bot.rest.create_message(userChannel.id, f"❌ Your roblox account has failed to be linked to https://www.roblox.com/users/{robloxId}/profile")
-         
+from Laplace.Utility import db         
 
 app = Flask(__name__)
 port = int(os.getenv("PORT", 8080))
@@ -66,11 +53,9 @@ def redirect():
     del db.pending[state]
 
     if robloxUserId != desiredRobloxUserId:
-        asyncio.run(sendFailure(discordUserId, robloxUserId))
         return "Error linking account, you provided and logged into two different roblox accounts.", 400
 
 
-    asyncio.run(sendConfirmation(discordUserId, robloxUserId))
     db.link(robloxUserId, discordUserId)
     return "Your account has been successfully linked."
 
