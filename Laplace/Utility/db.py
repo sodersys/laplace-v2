@@ -1,6 +1,8 @@
 import firebase_admin
 from firebase_admin import db, credentials, initialize_app
 
+pending = {}
+
 app = initialize_app(credentials.ApplicationDefault(), {
         'databaseURL': 'https://iapetus-74c01-default-rtdb.firebaseio.com/'
     }, name="db_app")
@@ -19,6 +21,10 @@ class UserProfile():
     robloxId: int
     robloxName: str
     departments: dict[str, DepartmentInfo]
+
+def link(robloxId: int, discordId: int):
+    db.reference(f"data/{robloxId}/discordId", app=app).set(str(discordId))
+    db.reference(f"reverseLookUp/{discordId}", app=app).set(robloxId)
 
 def getDiscordId(robloxId: int) -> str: 
     return db.reference(f"data/{robloxId}/discordId", app=app).get() or "0"

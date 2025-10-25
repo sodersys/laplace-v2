@@ -1,6 +1,5 @@
-import hikari, lightbulb
+import hikari, lightbulb, secrets, os
 from Laplace.Utility import db, config, embeds, roblox
-
 loader = lightbulb.Loader()
 
 def failedUpdate(content: str):
@@ -25,7 +24,6 @@ async def update(ctx: lightbulb.Context, otherUser: int | None = None) -> hikari
 
      guildData: dict[str, dict[int, dict[int, list[str]]] | str] = configData['discords'][guildId]['binds']
      robloxGroups = roblox.getGroupRoles(robloxId)
-
 
      rolesToAdd = []
      nameFormat = "{username}"
@@ -123,6 +121,9 @@ async def canUserUpdateOthers(ctx: lightbulb.Context):
 
      return False
 
+clientId = os.getenv("clientId")
+redirectUri = "https://laplaceomg-190212166685.us-central1.run.app/redirect"
+scope = "openid"
 
 @loader.command
 class Verify(
@@ -158,7 +159,24 @@ class Verify(
                     robloxUserName = roblox.getUserName(boundRobloxAccount)
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"Your account is already bound to [{robloxUserName}](https://www.roblox.com/users/{boundRobloxAccount}/profile). If you want to get this account removed, create a ticket in the AD server."))
                return
-                    
+          await ctx.respond(embeds.makeEmbed("Success", "You don't have a linked account, click the link sent to you in DMs to authenticate your account."))
+          stateToken = secrets.token_urlsafe(16)
+          db.pending[stateToken] = ctx.user.id
+
+          authUrl = (
+               f"https://www.roblox.com/oauth/authorize"
+               f"?client_id={clientId}"
+               f"&response_type=code"
+               f"&scope={scope}"
+               f"&redirect_uri={redirectUri}"
+               f"&state={stateToken}"
+          )
+
+          userChannel = await ctx.user.fetch_dm_channel()
+
+          userChannel.send(f"Authorize Laplace in order to validate your account. {authUrl}")
+
+          
 @loader.command
 class Update(
      lightbulb.SlashCommand,

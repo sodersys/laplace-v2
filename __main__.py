@@ -1,5 +1,5 @@
 from Laplace import port, bot
-from Laplace.Utility import db, config, embeds, quota, roblox
+from Laplace.Utility import auth, db, config, embeds, quota, roblox
 from threading import Thread
 import asyncio
 
