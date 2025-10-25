@@ -195,7 +195,7 @@ class Verify(
           components = [
                hikari.impl.ContainerComponentBuilder(
                     components=[
-                         hikari.impl.TextDisplayComponentBuilder(content=f"You have a pending verification request between [{robloxUserName}](https://www.roblox.com/users/{self.robloxId}/profile) and your discord account. Click the button below and authorize Laplace Authentication to complete verification."),
+                         hikari.impl.TextDisplayComponentBuilder(content=f"You have a pending verification request between [{accountName}](https://www.roblox.com/users/{self.robloxId}/profile) and your discord account. Click the button below and authorize Laplace Authentication to complete verification."),
                     ]
                ),
                hikari.impl.MessageActionRowBuilder(
