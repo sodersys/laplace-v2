@@ -28,5 +28,8 @@ class whois(
                          await ctx.respond(f"No discord user is bound to [{self.robloxName}](<https://www.roblox.com/users/{robloxId}/profile>)")
                          return
           
-          await ctx.respond(embeds.makeEmbed("Success", f"Account Bindings For <@{discordUser}>", f"[{self.robloxName}](<https://www.roblox.com/users/{robloxId}/profile>)"))
+          robloxId = roblox.getRobloxId(user.id)
+          robloxName = roblox.getUserName(robloxId)
+
+          await ctx.respond(embeds.makeEmbed("Success", f"Account Bindings For <@{user.id}>", f"[{robloxName}](<https://www.roblox.com/users/{robloxId}/profile>)"))
 
