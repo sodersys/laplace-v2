@@ -3,8 +3,8 @@ from Laplace.Utility import db, config, embeds, roblox, quota
 loader = lightbulb.Loader()
 
 def makeEmojiProgressBar(amount: int, required: int) -> str:
-     scaled = ((min(max(amount, 0), required) / required) * 10) // 1
-     return "🟩" * scaled + "🟥" * (10-scaled)
+     scaled = int(((min(max(amount, 0), required) / required) * 10) // 1)
+     return "🟩" * scaled + "🟥" * int(10-scaled)
 
 
 @loader.command
