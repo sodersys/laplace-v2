@@ -7,7 +7,7 @@ import Laplace.bot as bot
 def quotaCheck(playerData: db.QuotaData, quotaData: db.QuotaData):
      if "firstQuota" in playerData or "ignoreQuota" in playerData:
           return True
-     for key, value in quotaData.__dict__.items():
+     for key, value in quotaData.items():
           if not key in playerData:
                return False
           if playerData[key] < value:
