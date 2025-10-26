@@ -11,8 +11,8 @@ def makeEmojiProgressBar(amount: int, required: int) -> str:
 @loader.command
 class quota(
      lightbulb.SlashCommand,
-     mame = "quota",
-     description = "Check your quota or someone else's"
+     name = "quota",
+     description = "Check your quota or another quota."
 ):
      user = lightbulb.user("user", "The user you want to check.", default = None)
 

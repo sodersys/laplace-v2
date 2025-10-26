@@ -142,14 +142,14 @@ class Verify(
      name = "verify",
      description = "Verify to get your roles."
 ):
-     robloxName = lightbulb.string("accountName", "Your Roblox User Name", default="")
+     robloxName = lightbulb.string("accountName", "Your Roblox User Name", default=None)
      @lightbulb.invoke
      async def invoke(self, ctx: lightbulb.Context) -> None:
           await ctx.defer()
           if ctx.channel_id == (await ctx.user.fetch_dm_channel()).id:
                return await ctx.respond("You can only use commands inside of Fourier Discord servers.")
 
-          if self.robloxName == "":
+          if self.robloxName == None:
                await ctx.respond(await update(ctx))
                return
 
