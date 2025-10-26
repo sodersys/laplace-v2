@@ -142,7 +142,7 @@ class Verify(
      name = "verify",
      description = "Verify to get your roles."
 ):
-     robloxName = lightbulb.string("accountName", "Your Roblox User Name", default=None)
+     robloxName = lightbulb.string("accountname", "Your Roblox User Name", default=None)
      @lightbulb.invoke
      async def invoke(self, ctx: lightbulb.Context) -> None:
           await ctx.defer()
