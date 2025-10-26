@@ -14,5 +14,4 @@ def init():
         await client.load_extensions("Laplace.Commands.Verification", "Laplace.Commands.UpdateDB", "Laplace.Commands.QuotaManagement", "Laplace.Commands.Info")
         await client.start()
 
-
     bot.run()
