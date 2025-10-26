@@ -32,8 +32,8 @@ def getDiscordId(robloxId: int) -> str:
 def getRobloxId(discordId: str) -> int:
     return db.reference(f"reverseLookUp/{discordId}", app=app).get() or 0
 
-def getQuotaStatus(userId: int, team: str) -> dict[str, QuotaData]:
-    return db.reference(f"data/{userId}/quotas/{team}", app=app).get() or {}
+def getQuotaStatus(userId: int, team: str) -> QuotaData:
+    return db.reference(f"data/{userId}/quotas/{team}", app=app).get() or {'time': 0, 'events': 0}
     
 def resetQuotaStatus(userId: int, team: str, ignoreQuota: bool):
     return db.reference(f"data/{userId}/quotas/{team}", app=app).set({'time': 0, 'events': 0, 'ignoreQuota': ignoreQuota})
