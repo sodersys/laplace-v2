@@ -45,7 +45,7 @@ class QuotaCheck(
           if passed:
                embed = embeds.makeEmbed("Success", "Quota Passed", f'Time: {quotaData['time']} / {quotaRequirements['time']}\n{makeEmojiProgressBar(quotaData['time'], quotaRequirements['time'])}\nEvents: {quotaData['events']} / {quotaRequirements['events']}\n{makeEmojiProgressBar(quotaData['events'], quotaRequirements['events'])}', targetUser)
           else:
-               embed = embeds.makeEmbed("Failed", "Quota Failed", f'Time: {quotaData['time']} / {quotaRequirements['time']}\n{makeEmojiProgressBar(quotaData['time'], quotaRequirements['time'])}\nEvents: {quotaData['events']} / {quotaRequirements['events']}\n{makeEmojiProgressBar(quotaData['events'], quotaRequirements['events'])}', targetUser)
+               embed = embeds.makeEmbed("Failure", "Quota Failed", f'Time: {quotaData['time']} / {quotaRequirements['time']}\n{makeEmojiProgressBar(quotaData['time'], quotaRequirements['time'])}\nEvents: {quotaData['events']} / {quotaRequirements['events']}\n{makeEmojiProgressBar(quotaData['events'], quotaRequirements['events'])}', targetUser)
                
           await ctx.respond(embed)
           
