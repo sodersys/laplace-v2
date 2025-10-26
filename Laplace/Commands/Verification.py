@@ -142,43 +142,45 @@ class Verify(
      name = "verify",
      description = "Verify to get your roles."
 ):
-     robloxId = lightbulb.integer("robloxid", "Your Roblox User ID", default=0)
+     robloxName = lightbulb.string("accountName", "Your Roblox User Name", default="")
      @lightbulb.invoke
      async def invoke(self, ctx: lightbulb.Context) -> None:
           await ctx.defer()
           if ctx.channel_id == (await ctx.user.fetch_dm_channel()).id:
                return await ctx.respond("You can only use commands inside of Fourier Discord servers.")
 
-          if self.robloxId == 0:
+          if self.robloxName == "":
                await ctx.respond(await update(ctx))
                return
 
-          boundAccount = db.getDiscordId(self.robloxId)
+          robloxId = await roblox.getIdByUsername(self.robloxName)
+          
+          if robloxId == "0":
+               await ctx.respond(await ctx.respond(embeds.makeEmbed("Failure", "Account does not exist.", f"There is no account linked to the id: {robloxId}")))
+
+          boundAccount = db.getDiscordId(robloxId)
           if boundAccount != "0":
                if boundAccount == ctx.user.id:
                     await ctx.respond(await update(ctx))
                else:
-                    robloxUserName = roblox.getUserName(self.robloxId)
-                    await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"[{robloxUserName}](https://www.roblox.com/users/{self.robloxId}/profile) is already bound to user: <@{boundAccount}>"))
+                    robloxUserName = roblox.getUserName(robloxId)
+                    await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"[{robloxUserName}](https://www.roblox.com/users/{robloxId}/profile) is already bound to user: <@{boundAccount}>"))
                return
           
           boundRobloxAccount = db.getRobloxId(ctx.user.id)
           if boundRobloxAccount != 0:
-               if boundRobloxAccount == self.robloxId:
+               if boundRobloxAccount == robloxId:
                     await ctx.respond(update(ctx))
                else: 
                     robloxUserName = roblox.getUserName(boundRobloxAccount)
                     await ctx.respond(embeds.makeEmbed("Failure", "Failed to authenticate.", f"Your account is already bound to [{robloxUserName}](https://www.roblox.com/users/{boundRobloxAccount}/profile). If you want to get this account removed, create a ticket in the AD server."))
                return
          
-          accountName = roblox.getUserName(self.robloxId)
-          if accountName is None:
-               await ctx.respond(await ctx.respond(embeds.makeEmbed("Failure", "Account does not exist.", f"There is no account linked to the id: {self.robloxId}")))
           await ctx.respond(embeds.makeEmbed("Success", "Ready to Verify.", "You don't have a linked account, click the link sent to you in DMs to authenticate your account."))
           stateToken = secrets.token_urlsafe(16)
           db.pending[stateToken] = {
                "discord": ctx.user.id,
-               "roblox": self.robloxId
+               "roblox": robloxId
           }
 
           authUrl = (

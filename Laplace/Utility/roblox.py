@@ -22,6 +22,12 @@ def getUserProfile(discordId: str) -> UserProfile:
 
      if robloxId == 0:
           return userProfile
+     
+async def getIdByUsername(username: str) -> int:
+     user = await client.get_user_by_username(username)
+     if user is None:
+          return 0
+     return user.id
 
 def getGroupRoles(userId: int) -> dict[str, DepartmentInfo]: 
      result = requests.get(f'https://groups.roblox.com/v1/users/{userId}/groups/roles?includeLocked=false')
@@ -58,7 +64,7 @@ def getGroupRolesWithQuota(userId: int) -> dict[str, DepartmentInfo]:
      
      jsonResult = result.json()['data']
      groupRoles: dict[str, DepartmentInfo] = {}
-     
+
      configData = config.getConfig()
 
      for group in jsonResult:

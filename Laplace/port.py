@@ -61,91 +61,11 @@ def redirect():
 
 @app.route("/tos")
 def tos():
-    return """Last Updated: October 25, 2025
-
-1. Acceptance
-
-By using Laplace, you agree to these Terms of Service.
-
-2. Bot Usage
-
-You may only use this bot for legitimate purposes.
-
-Misuse, abuse, or attempts to hack the bot are prohibited.
-
-3. Account Linking
-
-Linking your Discord account to Roblox is voluntary.
-
-You are responsible for maintaining the security of your own accounts.
-
-4. Data
-
-By verifying your account, you consent to collection of Discord ID and Roblox ID.
-
-See our Privacy Policy for details.
-
-5. Disclaimers
-
-The bot is provided “as-is.”
-
-We are not responsible for any damages resulting from bot use.
-
-We are not affiliated with Roblox or Discord.
-
-6. Termination
-
-We may revoke access for users who violate these Terms.
-
-7. Changes
-
-We may modify these Terms at any time. Continued use constitutes acceptance of changes."""
+    return "Last Updated: October 25, 2025 1. Acceptance By using Laplace, you agree to these Terms of Service. 2. Bot Usage You may only use this bot for legitimate purposes. Misuse, abuse, or attempts to hack the bot are prohibited. 3. Account Linking Linking your Discord account to Roblox is voluntary. You are responsible for maintaining the security of your own accounts. 4. Data By verifying your account, you consent to collection of Discord ID and Roblox ID. See our Privacy Policy for details. 5. Disclaimers The bot is provided “as-is.” We are not responsible for any damages resulting from bot use. We are not affiliated with Roblox or Discord. 6. Termination We may revoke access for users who violate these Terms. 7. Changes We may modify these Terms at any time. Continued use constitutes acceptance of changes."
 
 @app.route("/privacy")
 def privacy():
-    return """Last Updated: October 25, 2025
-
-Laplace (“we”, “our”, “us”) respects your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our Discord bot.
-
-1. Information We Collect
-
-Discord ID: Used to identify your account for verification purposes.
-
-Roblox ID & Username: Collected only when you verify your Roblox account via OAuth2.
-
-Optional Data: Any information you voluntarily provide via bot commands (e.g., preferences, feedback).
-
-2. How We Use Your Information
-
-To verify your Roblox account ownership.
-
-To provide and maintain bot functionality.
-
-To prevent abuse and ensure security.
-
-3. Data Sharing
-
-We do not sell, rent, or share your personal data with third parties, except as required by law.
-
-4. Data Retention
-
-Verification data is stored until you request deletion or if the bot is discontinued.
-
-You can request deletion of your data by contacting the bot owner.
-
-5. Security
-
-We implement reasonable technical measures to protect your data.
-
-No system is 100% secure; we cannot guarantee complete security.
-
-6. Children’s Privacy
-
-This bot is not intended for children under 13.
-
-7. Changes to this Policy
-
-We may update this Privacy Policy. Updated versions will be posted here."""
+    return "Last Updated: October 25, 2025 Laplace (“we”, “our”, “us”) respects your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our Discord bot. 1. Information We Collect Discord ID: Used to identify your account for verification purposes. Roblox ID & Username: Collected only when you verify your Roblox account via OAuth2. Optional Data: Any information you voluntarily provide via bot commands (e.g., preferences, feedback). 2. How We Use Your Information To verify your Roblox account ownership. To provide and maintain bot functionality. To prevent abuse and ensure security. 3. Data Sharing We do not sell, rent, or share your personal data with third parties, except as required by law. 4. Data Retention Verification data is stored until you request deletion or if the bot is discontinued. You can request deletion of your data by contacting the bot owner. 5. Security We implement reasonable technical measures to protect your data. No system is 100% secure; we cannot guarantee complete security. 6. Children’s Privacy This bot is not intended for children under 13. 7. Changes to this Policy We may update this Privacy Policy. Updated versions will be posted here."
 
 def init():
     app.run(host="0.0.0.0", port=port)
