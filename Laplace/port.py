@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request
 import requests
+import asyncio
 from Laplace.Utility import db         
 
 app = Flask(__name__)
@@ -11,9 +12,22 @@ clientId = os.getenv("clientId")
 redirectUri = "https://laplaceomg-190212166685.us-central1.run.app/redirect"
 scope = "openid"
 
+async def fnc():
+    await asyncio.sleep(5)
+    print("meow")
+
 @app.route("/")
 def home():
     return "omg"
+
+@app.route("/laplace")
+def laplace():
+    auth = request.args.get("authentication")
+    requestType = request.args.get("requestType")
+
+    asyncio.run(fnc())
+
+    return "meow"
 
 @app.route("/redirect")
 def redirect():

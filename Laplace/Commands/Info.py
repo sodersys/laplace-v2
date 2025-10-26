@@ -1,7 +1,18 @@
 import hikari, lightbulb
-from Laplace.Utility import db, roblox, embeds
+from Laplace.Utility import db, roblox, embeds, config
 
 loader = lightbulb.Loader()
+
+def getRobloxRanks(userId: int) -> str:
+     ranks = roblox.getGroupRoles(userId)
+
+     string = ""
+     for id, rank in ranks.items():
+          string += f"{id} | {rank['groupRole']}\n"  
+
+     if string == "":
+          return "No valid groups."
+     return string
 
 @loader.command
 class whois(
@@ -31,5 +42,11 @@ class whois(
           robloxId = roblox.getRobloxId(user.id)
           robloxName = roblox.getUserName(robloxId)
 
-          await ctx.respond(embeds.makeEmbed("Success", f"Account Bindings For <@{user.id}>", f"[{robloxName}](<https://www.roblox.com/users/{robloxId}/profile>)"))
+          await ctx.respond(embeds.makeEmbed("Success", f"Account Information", f"<@{user.id}> | [{robloxName}](<https://www.roblox.com/users/{robloxId}/profile>)", fields=[
+               {
+                    "name":"Group Roles",
+                    "value": getRobloxRanks(robloxId),
+                    "inline": False
+               },
+          ]))
 
